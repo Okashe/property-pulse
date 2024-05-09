@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import {usePathname} from 'next/navigation';
 import Image from 'next/image';
+import {signIn, signOut, useSession, getProviders} from 'next-auth/react'
 import logo from '@/assets/images/logo-white.png';
 import profileDefault from '@/assets/images/profile.png';
 import Link from 'next/link';
