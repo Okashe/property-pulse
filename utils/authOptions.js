@@ -1,4 +1,8 @@
+import connectDB from '@/config/database'
+import User from '@/models/User';
 import GoogleProvider from 'next-auth/providers/google'
+import { signOut } from 'next-auth/react';
+import { redirect } from 'next/dist/server/api-utils';
 
 export const authOptions = {
     providers:[
@@ -15,17 +19,34 @@ export const authOptions = {
         })
     ],
     callbacks:{
-        //Invoke on successful siginin
+        //Invoked on successful siginin
         async signIn({profile}){
             //1 .connect to database
+            await connectDB();
             //2.check if user exists
+             const userExists = await User.findOne({email: profile.email})
             //3.if not, then add user to database
+            if(!userExists){
+                //Truncate user name if too long
+                const username = profile.name.slice(0,20);
+
+                await  User.create({
+                    email: profile.email,
+                    username,
+                    image: profile.picture
+                })
+            }
             //4. Return true to allow sign in
+            return true
         },
         async session({session}){
             //1. get user from database
+            const user = await User.findOne({email: session.user.email});
             //2. Assign the user id to the session
+            session.user.id =  user._id.toString();
             //3. return sesison
-        }
+            return session;
+        },
+        async signOut(){redirect: false}
     }
 }

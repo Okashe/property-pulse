@@ -6,21 +6,28 @@ async function fetchProperties() {
     try {
         //Handle the case where the domain is not avaialble yet
         if(!apiDomain){
+          console.warn('API domain is not available.');
             return [];
         }
 
-      const res = await fetch(`${apiDomain}/properties`)
+      const res = await fetch(`${apiDomain}/properties`,{ 
+           cache: 'no-store', 
+          })
+     
   
       if (!res.ok) {
         throw new Error('Failed to fetch data');
       }
-  
-     
+
       return  res.json();
+
     } catch (error) {
       console.log(error)
+       return []
     }
   };
+
+    //Fetch Single Property
   async function fetchProperty(id) {
     try {
         //Handle the case where the domain is not avaialble yet
@@ -35,13 +42,16 @@ async function fetchProperties() {
       }
   
      
+     
       return  res.json();
+
     } catch (error) {
       console.log(error)
+      throw error
     }
   };
 
-  //Fetch Single Property
+
   
 
   export {fetchProperties, fetchProperty}
