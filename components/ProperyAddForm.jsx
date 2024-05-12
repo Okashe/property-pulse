@@ -103,7 +103,7 @@ const ProperyAddForm = () => {
       }
 
   return ( mounted && (
-    <form>
+    <form action="/api/properties" method="POST" encType="multipart/form-data">
     <h2 className="text-3xl text-center font-semibold mb-6">
       Add Property
     </h2>
@@ -140,7 +140,7 @@ const ProperyAddForm = () => {
         className="border rounded w-full py-2 px-3 mb-2"
         placeholder="eg. Beautiful Apartment In Miami"
         required
-        value={fields.type}
+        value={fields.name}
         onChange={handleChange}
       />
     </div>
@@ -531,6 +531,7 @@ const ProperyAddForm = () => {
         className="border rounded w-full py-2 px-3"
         accept="image/*"
         multiple
+        required
         onChange={handleImageChange}
       />
     </div>
